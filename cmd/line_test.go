@@ -2,18 +2,20 @@ package cmd
 
 import (
 	"bytes"
-	"testing"
 	"io"
+	"testing"
 )
 
 func TestLine(t *testing.T) {
 	tests := []struct {
 		name     string
-		fileName string
+		args     []string
 		expected string
 	}{
-		{"Empty file", "test_data/0_line.txt", "0 test_data/0_line.txt\n"},
-		{"Multiple lines", "test_data/10_lines.txt", "10 test_data/10_lines.txt\n"},
+		{"Empty file", []string{"-l", "test_data/0_line.txt"}, "0 test_data/0_line.txt\n"},
+		{"Multiple line file", []string{"-l", "test_data/10_lines.txt"}, "10 test_data/10_lines.txt\n"},
+		{"Multiple files", []string{"-l", "test_data/0_line.txt", "test_data/10_lines.txt"},
+			"0 test_data/0_line.txt\n10 test_data/10_lines.txt\n"},
 	}
 
 	for _, test := range tests {
@@ -22,7 +24,7 @@ func TestLine(t *testing.T) {
 			var b = bytes.NewBufferString("")
 
 			cmd.SetOut(b)
-			cmd.SetArgs([]string{"-l", test.fileName})
+			cmd.SetArgs(test.args)
 			cmd.Execute()
 
 			out, err := io.ReadAll(b)

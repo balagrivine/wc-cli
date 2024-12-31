@@ -15,7 +15,7 @@ func RootCmd() *cobra.Command {
 		Short: "Print newline, word, and byte counts for each file",
 		Long: `wc-cli is a CLI library for Go prints newline, 
 		word and byte counts for each file.`,
-		
+
 		Run: CountLines,
 	}
 	cmd.PersistentFlags().BoolVarP(&LineFlag, "line", "l", false, "print the newline counts")
