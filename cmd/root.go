@@ -1,12 +1,16 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
-var LineFlag bool
+var (
+	LineFlag bool
+	ByteFlag bool
+)
 
 // rootCmd represents the base command when called without any subcommands
 func RootCmd() *cobra.Command {
@@ -16,9 +20,19 @@ func RootCmd() *cobra.Command {
 		Long: `wc-cli is a CLI library for Go prints newline, 
 		word and byte counts for each file.`,
 
-		Run: CountLines,
+		Run: func(cmd *cobra.Command, args []string) {
+			if ByteFlag {
+				CountBytes(cmd, args)
+			} else if LineFlag {
+				CountLines(cmd, args)
+			} else {
+				fmt.Println("No flags passed")
+			}
+		},
 	}
 	cmd.PersistentFlags().BoolVarP(&LineFlag, "line", "l", false, "print the newline counts")
+	cmd.PersistentFlags().BoolVarP(&ByteFlag, "byte", "m", false, "print number of bytes")
+
 	return cmd
 }
 
@@ -30,10 +44,4 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
-}
-
-func init() {
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	RootCmd().Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
