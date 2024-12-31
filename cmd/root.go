@@ -10,6 +10,7 @@ import (
 var (
 	LineFlag bool
 	ByteFlag bool
+	WordFlag bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -25,6 +26,8 @@ func RootCmd() *cobra.Command {
 				CountBytes(cmd, args)
 			} else if LineFlag {
 				CountLines(cmd, args)
+			} else if WordFlag {
+				CountWords(cmd, args)
 			} else {
 				fmt.Println("No flags passed")
 			}
@@ -32,6 +35,7 @@ func RootCmd() *cobra.Command {
 	}
 	cmd.PersistentFlags().BoolVarP(&LineFlag, "line", "l", false, "print the newline counts")
 	cmd.PersistentFlags().BoolVarP(&ByteFlag, "byte", "m", false, "print number of bytes")
+	cmd.PersistentFlags().BoolVarP(&WordFlag, "word", "w", false, "print the word count")
 
 	return cmd
 }
