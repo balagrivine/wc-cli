@@ -1,15 +1,15 @@
 package cmd
 
 import (
-	"fmt"
 	"bufio"
-	"strings"
+	"fmt"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
 
-func CountWords(cmd * cobra.Command, args []string) {
+func CountWords(cmd *cobra.Command, args []string) {
 
 	for _, val := range args {
 		file, err := os.Open(val)
