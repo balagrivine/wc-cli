@@ -19,7 +19,7 @@ cat <filename> | wc-cli <flag>
 
 ## Basic Commands
 
-** 1. Printing number of lines in a file **
+**1. Printing number of lines in a file**
 ```shell
 wc-cli -l <filename(s)>
 ```
@@ -29,12 +29,12 @@ You can pass input from stdin
 cat <filename> | wc-cli
 ```
 
-** 2. Printting number of bytes in a file **
+**2. Printting number of bytes in a file**
 ```shell
 wc-cli -m <filename(s)>
 ```
 
-** 3. Printing number of words in a file **
+**3. Printing number of words in a file**
 ```shell
 wc-cli -w <filename(s)>
 ```
