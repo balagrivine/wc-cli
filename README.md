@@ -15,8 +15,10 @@ wc-cli <flag> <filename...>
 To read from the standard input use
 ```shell
 cat <filename> | wc-cli <flag>
+```
 
 ## Basic Commands
+
 ** 1. Printing number of lines in a file **
 ```shell
 wc-cli -l <filename(s)>
