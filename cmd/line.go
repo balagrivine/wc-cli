@@ -21,7 +21,7 @@ func countLines(args []string) error {
 			return err
 		}
 
-		fmt.Fprintf(os.Stdout, "%d\n", lineCount)
+		fmt.Fprintf(os.Stdout, "%d", lineCount)
 	}
 
 	// Else scan from the provided file(s)
