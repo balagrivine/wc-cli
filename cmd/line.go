@@ -4,13 +4,11 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-
-	"github.com/spf13/cobra"
 )
 
-func CountLines(cmd *cobra.Command, args []string) {
+func countLines(args []string) error {
 
-	var lineCount int = 0
+	var lineCount uint
 
 	// Scan from standard input if no file is provided
 	if len(args) == 0 {
@@ -20,17 +18,17 @@ func CountLines(cmd *cobra.Command, args []string) {
 			lineCount++
 		}
 		if err := scanner.Err(); err != nil {
-			fmt.Println(err)
+			return err
 		}
 
-		fmt.Fprintf(cmd.OutOrStdout(), "%d\n", lineCount)
+		fmt.Fprintf(os.Stdout, "%d\n", lineCount)
 	}
 
 	// Else scan from the provided file(s)
 	for _, val := range args {
 		file, err := os.Open(val)
 		if err != nil {
-			fmt.Printf("Error occured while opening file: %v", err)
+			return err
 		}
 
 		scanner := bufio.NewScanner(file)
@@ -38,9 +36,15 @@ func CountLines(cmd *cobra.Command, args []string) {
 		for scanner.Scan() {
 			lineCount++
 		}
+
 		if err = scanner.Err(); err != nil {
-			fmt.Printf("Error occured while reading file: %v", err)
+			return err
 		}
-		fmt.Fprintf(cmd.OutOrStdout(), "%d %s\n", lineCount, val)
+
+		fmt.Fprintf(os.Stdout, "%d %s\n", lineCount, val)
+		if err = file.Close(); err != nil {
+			return err
+		}
 	}
+	return nil
 }

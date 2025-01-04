@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
+	"errors"
 
 	"github.com/spf13/cobra"
 )
@@ -21,16 +21,18 @@ func RootCmd() *cobra.Command {
 		Long: `wc-cli is a CLI library for Go prints newline, 
 		word and byte counts for each file.`,
 
-		Run: func(cmd *cobra.Command, args []string) {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			if ByteFlag {
-				CountBytes(cmd, args)
-			} else if LineFlag {
-				CountLines(cmd, args)
-			} else if WordFlag {
-				CountWords(cmd, args)
-			} else {
-				fmt.Println("No flags passed")
+				return countBytes(args)
 			}
+			if LineFlag {
+				return countLines(args)
+			} 
+			if WordFlag {
+				return countWords(args)
+			}
+			return errors.New("No flags passed")
+			
 		},
 	}
 	cmd.PersistentFlags().BoolVarP(&LineFlag, "line", "l", false, "print the newline counts")
