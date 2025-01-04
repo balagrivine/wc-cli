@@ -2,22 +2,20 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"io"
-
-	"github.com/spf13/cobra"
+	"os"
 )
 
-func CountBytes(cmd *cobra.Command, args []string) {
+func countBytes(args []string) error {
 
 	// Read from stdin stream if no file is provided
 	if len(args) == 0 {
 		bytesRead, err := io.ReadAll(os.Stdin)
 		if err != nil {
-			fmt.Fprintf(cmd.OutOrStdout(), "%v", err)
+			return err
 		}
 
-		fmt.Fprintf(cmd.OutOrStdout(), "%d\n", len(bytesRead))
+		fmt.Fprintf(os.Stdout, "%d\n", len(bytesRead))
 	}
 
 	// Else read from file(s) provided
@@ -25,9 +23,10 @@ func CountBytes(cmd *cobra.Command, args []string) {
 
 		data, err := os.ReadFile(val)
 		if err != nil {
-			fmt.Fprintf(cmd.OutOrStdout(), "%v", err)
+			return err
 		}
 
-		fmt.Fprintf(cmd.OutOrStdout(), "%d %s\n", len(data), val)
+		fmt.Fprintf(os.Stdout, "%d %s\n", len(data), val)
 	}
+	return nil
 }

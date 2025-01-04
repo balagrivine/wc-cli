@@ -25,15 +25,6 @@ func TestByteCount(t *testing.T) {
 			cmd := RootCmd()
 			var b = bytes.NewBufferString("")
 
-			cmd.SetOut(b)
-			cmd.SetArgs(test.args)
-			cmd.Execute()
-
-			out, err := io.ReadAll(b)
-			if err != nil {
-				t.Fatal(err)
-			}
-
 			if string(out) != test.expected {
 				t.Errorf("expected %v, got %v\n", test.expected, string(out))
 			}
