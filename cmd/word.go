@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
-func countWords(args []string) error {
+func countWords(cmd *cobra.Command, args []string) error {
 
 	var wordCount int
 	fmt.Println(args)
@@ -22,7 +24,7 @@ func countWords(args []string) error {
 			return err
 		}
 
-		fmt.Fprintf(os.Stdout, "%d\n", wordCount)
+		fmt.Fprintf(cmd.OutOrStdout(), "%d\n", wordCount)
 	}
 
 	// Else scan from the file(s) provided
@@ -42,7 +44,7 @@ func countWords(args []string) error {
 			return err
 		}
 
-		fmt.Fprintf(os.Stdout, "%d %s\n", wordCount, val)
+		fmt.Fprintf(cmd.OutOrStdout(), "%d %s\n", wordCount, val)
 
 		if err = file.Close(); err != nil {
 			return err

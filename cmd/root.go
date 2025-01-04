@@ -23,13 +23,13 @@ func RootCmd() *cobra.Command {
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if byteFlag {
-				return countBytes(args)
+				return countBytes(cmd, args)
 			}
 			if lineFlag {
-				return countLines(args)
+				return countLines(cmd, args)
 			} 
 			if wordFlag {
-				return countWords(args)
+				return countWords(cmd, args)
 			}
 			return errors.New("No flags passed")
 			
