@@ -8,9 +8,9 @@ import (
 )
 
 var (
-	LineFlag bool
-	ByteFlag bool
-	WordFlag bool
+	lineFlag bool
+	byteFlag bool
+	wordFlag bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -22,22 +22,22 @@ func RootCmd() *cobra.Command {
 		word and byte counts for each file.`,
 
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if ByteFlag {
+			if byteFlag {
 				return countBytes(args)
 			}
-			if LineFlag {
+			if lineFlag {
 				return countLines(args)
 			} 
-			if WordFlag {
+			if wordFlag {
 				return countWords(args)
 			}
 			return errors.New("No flags passed")
 			
 		},
 	}
-	cmd.PersistentFlags().BoolVarP(&LineFlag, "line", "l", false, "print the newline counts")
-	cmd.PersistentFlags().BoolVarP(&ByteFlag, "byte", "m", false, "print number of bytes")
-	cmd.PersistentFlags().BoolVarP(&WordFlag, "word", "w", false, "print the word count")
+	cmd.PersistentFlags().BoolVarP(&lineFlag, "line", "l", false, "print the newline counts")
+	cmd.PersistentFlags().BoolVarP(&byteFlag, "byte", "m", false, "print number of bytes")
+	cmd.PersistentFlags().BoolVarP(&wordFlag, "word", "w", false, "print the word count")
 
 	return cmd
 }

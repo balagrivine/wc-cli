@@ -2,38 +2,38 @@ package cmd
 
 import (
 	"bytes"
-	"io"
+	"os"
 	"testing"
 )
 
-func TestLine(t *testing.T) {
+func TestLineCount(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     []string
 		expected string
 	}{
-		{"Empty file", []string{"-l", "test_data/0_line.txt"}, "0 test_data/0_line.txt\n"},
-		{"Multiple line file", []string{"-l", "test_data/10_lines.txt"}, "10 test_data/10_lines.txt\n"},
-		{"Multiple files", []string{"-l", "test_data/0_line.txt", "test_data/10_lines.txt"},
+		{"Empty file", []string{"test_data/0_line.txt"}, "0 test_data/0_line.txt\n"},
+		{"Multiple line file", []string{"test_data/10_lines.txt"}, "10 test_data/10_lines.txt\n"},
+		{"Multiple files", []string{"test_data/0_line.txt", "test_data/10_lines.txt"},
 			"0 test_data/0_line.txt\n10 test_data/10_lines.txt\n"},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			cmd := RootCmd()
-			var b = bytes.NewBufferString("")
+			var bf bytes.Buffer
+			originalStdout := os.Stdout
+			// Redirect stdout to the buffer for easier access
+			os.Stdout = &bf
 
-			cmd.SetOut(b)
-			cmd.SetArgs(test.args)
-			cmd.Execute()
+			t.Cleanup(func() {
+				// Restore stdout
+				os.Stdout = originalStdout
+			})
 
-			out, err := io.ReadAll(b)
-			if err != nil {
-				t.Fatal(err)
-			}
+			_ = countLines(test.args)
 
-			if string(out) != test.expected {
-				t.Errorf("expected %v, got %v\n", test.expected, string(out))
+			if bf.String() != test.expected {
+				t.Errorf("expected %v, got %v\n", test.expected, bf.String())
 			}
 		},
 		)
