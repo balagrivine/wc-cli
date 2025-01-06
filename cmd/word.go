@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -12,13 +11,13 @@ import (
 func countWords(cmd *cobra.Command, args []string) error {
 
 	var wordCount int
-	fmt.Println(args)
 	// Scan from stdin if no file is provided
 	if len(args) == 0 {
 		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Split(bufio.ScanWords)
 
 		for scanner.Scan() {
-			wordCount += len(strings.Fields(scanner.Text()))
+			wordCount++
 		}
 		if err := scanner.Err(); err != nil {
 			return err
@@ -35,9 +34,10 @@ func countWords(cmd *cobra.Command, args []string) error {
 		}
 
 		scanner := bufio.NewScanner(file)
+		scanner.Split(bufio.ScanWords)
 
 		for scanner.Scan() {
-			wordCount += len(strings.Fields(scanner.Text()))
+			wordCount++
 		}
 
 		if err = scanner.Err(); err != nil {
