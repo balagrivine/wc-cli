@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"os"
 	"errors"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -27,12 +27,12 @@ func RootCmd() *cobra.Command {
 			}
 			if lineFlag {
 				return countLines(cmd, args)
-			} 
+			}
 			if wordFlag {
 				return countWords(cmd, args)
 			}
 			return errors.New("No flags passed")
-			
+
 		},
 	}
 	cmd.PersistentFlags().BoolVarP(&lineFlag, "line", "l", false, "print the newline counts")
